@@ -1,8 +1,7 @@
 # CMPS 2200  Recitation 04
 
-**Name (Team Member 1):**_________________________  
-**Name (Team Member 2):**_________________________
-
+**Name (Team Member 1):** Hrishi Kabra  
+**Name (Team Member 2):** Petra Radmanovic 
 
 In this lab you will practice using the `map` and `reduce` functions. These functions are commonly used together in a `map-reduce` framework, used by Google and others to parallelize and scale common computations.
 
@@ -36,7 +35,17 @@ To use this function to count words, you'll need to implement your own `map_f` a
 
 4. Assume that a word `w` appears `n` times. What is the **work** and **span** of `word_count_reduce` for this word, assuming a parallel implementation of the `reduce` function?
 
-**Enter answer here**
+**Work**: $O(n)$
+- The reduce function processes n elements (each appearing once in the input list)
+- At each level of the binary tree, we perform one combine operation per node
+- Total number of combine operations = n-1 (since we have n leaves and need n-1 internal nodes)
+- Therefore, total work is $O(n-1) = O(n)$
+
+**Span**: $O(\log n)$
+- The parallel reduce uses a balanced binary tree structure
+- At each step, the function divides the list in half and processes both halves in parallel
+- The depth of the tree is $\log n$ (since we keep dividing by 2)
+- Since work at each level is $O(1)$ and we have $\log n$ levels, span = $O(\log n)$
 
 
 5. Why are we going through all this trouble? Couldn't I just use this function to count words?
@@ -52,7 +61,8 @@ for doc in docs:
 
 What is the problem that prevents us from easily parallelizing this solution?
 
-**Enter answer here**
+- You edit one empty dictionary in order to get the count
+- If this were parallelized, it would be difficult to update the same dictionary simultaneously - can cause problems
 
 
 ## Part 2: Sentiment analysis
